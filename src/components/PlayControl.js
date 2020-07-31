@@ -20,11 +20,11 @@ export  function PlayControl() {
 
 
 
+    console.log("playing",playing)
 
     const onTogglePlayPressed = async () => {
 
 
-        console.log("hi")
         if(inProgress)
             return
 

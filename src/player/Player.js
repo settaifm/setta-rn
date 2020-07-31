@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 
 import React, {Fragment, useEffect, useState} from 'react';
 
-import TrackPlayer, {usePlaybackState} from 'react-native-track-player';
+import TrackPlayer, {STATE_PLAYING, STATE_READY, usePlaybackState} from 'react-native-track-player';
 import {Block, Text} from 'galio-framework';
 import {materialTheme} from '../layout/constants';
 import {PlayControl} from '../components/PlayControl';
@@ -19,8 +19,9 @@ const FM_URL ="http://stream.zeno.fm/b0qy1rp884zuv";
 
 export function Player() {
 
-    const {isLoaded,error} = useSelector(state => state.player);
+    const {error} = useSelector(state => state.player);
     const [playerState, setState] = useState(null)
+    const [loaded, setLoaded] = useState(false)
     const {url} = useSelector(state => state.settings);
 
 
@@ -58,12 +59,16 @@ export function Player() {
 
 
             TrackPlayer.addEventListener('playback-state', (evt) => {
-                console.log("playback event",evt)
-                dispatch({type:SET_PLAY_STATE,evt['state']})
+
+                if(evt['state']===STATE_READY || evt['state']===STATE_PLAYING){
+                    setLoaded(true)
+                }
+
+                dispatch({type:SET_PLAY_STATE,payload:evt['state']})
             });
 
             TrackPlayer.addEventListener('playback-error', (evt) => {
-                console.log("playback event",evt)
+                console.log("playback error",evt)
                 dispatch({type:SET_PLAY_ERROR,evt})
             });
 
@@ -83,13 +88,12 @@ export function Player() {
 
     let component =<Fragment></Fragment>
 
-    if(isLoaded)
+    if(loaded)
         component =<PlayControl/>;
 
 
 
-    return (<Fragment><Block row top>
-                        <View style={{
+    return (<><View style={{
                             flex: 1,
                             flexDirection: 'column',
                             justifyContent: 'flex-start',
@@ -105,12 +109,11 @@ export function Player() {
                         </View>
 
 
-                    </Block>
 
 
                 <Block row style={styles.bottomContainer} >
                     {component}
-                </Block></Fragment>);
+                </Block></>);
 
 
 

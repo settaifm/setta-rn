@@ -42,13 +42,12 @@ export function Container() {
     return <View style={styles.viewcontainer}>
         <StatusBar barStyle="light-content" />
         <ImageBackground source={require('../../assets/galaxy.png')} style={styles.image}>
-            <View style={{  flex: 1,                flexDirection: 'column',                justifyContent: 'space-between',}}>
+            <View style={{  flex: 1,flexDirection: 'column',justifyContent: 'space-between',}}>
 
 
-                <View >
                     <SocialMedia/>
                     <Player/>
-                </View>
+
             </View>
         </ImageBackground>
     </View>

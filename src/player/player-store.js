@@ -1,4 +1,12 @@
 import {createReducer} from "../config/create-reducer";
+import {
+    State,
+    STATE_BUFFERING,
+    STATE_PAUSED,
+    STATE_PLAYING,
+    STATE_READY,
+    STATE_STOPPED,
+} from 'react-native-track-player';
 
 
 
@@ -41,8 +49,13 @@ export type AVPlaybackStatus =
 
 
 const initialState = {
-    state:"",
-    error:null
+    playerState:"",
+    error:null,
+    isPlaying:false,
+    isPaused:false,
+    isStopped:false,
+    isBuffering: false,
+    isReady: false,
 
 
 };
@@ -51,25 +64,50 @@ const initialState = {
 
 
 const setState =(state,action)=>{
+    //
+    // const allStates = [""]
+    //     {
+    //     "STATE_PLAYING":"1",
+    //     "STATE_PAUSED":"2",
+    //     "STATE_STOPPED":"3",
+    //     "STATE_BUFFERING":"4",
+    //     "STATE_READY":"5",
+    // }
+    //
+    //
+
+   const isPlaying = (action.payload===STATE_PLAYING)
+   const isPaused = (action.payload===STATE_PAUSED)
+   const isBuffering = (action.payload===STATE_BUFFERING)
+   const isStopped = (action.payload===STATE_STOPPED)
+   const isReady = (action.payload===STATE_READY)
+
+    //
+    // console.log("playing",action.payload===STATE_PLAYING)
+    // console.log("paused",action.payload===STATE_PAUSED)
+    // console.log("Buffering",action.payload===STATE_BUFFERING)
+    // console.log("Stopped",action.payload===STATE_STOPPED)
+    // console.log("Stopped",action.payload===STATE_READY)
+    return { ...state,playerState:action.payload,isPlaying,isPaused,isBuffering,isStopped,isReady}
+
+};
 
 
-    return { ...state,...action.payload}
+const setError =(state,action)=>{
+
+
+    return { ...state,error:action.payload}
 
 };
 
 
 
-const setState =(state,action)=>{
-
-
-    return { ...state,...action.payload}
-
-};
 
 
 
 const playerReducer = createReducer(initialState, {
-    [SET_PLAY_STATE]: setState
+    [SET_PLAY_STATE]: setState,
+    [SET_PLAY_ERROR]: setError
 
 
 
