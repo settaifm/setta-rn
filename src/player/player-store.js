@@ -64,39 +64,21 @@ const initialState = {
 
 
 const setState =(state,action)=>{
-    //
-    // const allStates = [""]
-    //     {
-    //     "STATE_PLAYING":"1",
-    //     "STATE_PAUSED":"2",
-    //     "STATE_STOPPED":"3",
-    //     "STATE_BUFFERING":"4",
-    //     "STATE_READY":"5",
-    // }
-    //
-    //
+
 
    const isPlaying = (action.payload===STATE_PLAYING)
    const isPaused = (action.payload===STATE_PAUSED)
-   const isBuffering = (action.payload===STATE_BUFFERING)
    const isStopped = (action.payload===STATE_STOPPED)
-   const isReady = (action.payload===STATE_READY)
+    const isBuffering = (action.payload===STATE_BUFFERING)
 
-    //
-    // console.log("playing",action.payload===STATE_PLAYING)
-    // console.log("paused",action.payload===STATE_PAUSED)
-    // console.log("Buffering",action.payload===STATE_BUFFERING)
-    // console.log("Stopped",action.payload===STATE_STOPPED)
-    // console.log("Stopped",action.payload===STATE_READY)
-    return { ...state,playerState:action.payload,isPlaying,isPaused,isBuffering,isStopped,isReady}
+    return { ...state,playerState:action.payload,isPlaying,isPaused,isBuffering,isStopped}
 
 };
 
 
 const setError =(state,action)=>{
-
-
-    return { ...state,error:action.payload}
+    //TODO What
+    return { ...state,error:action.payload,isPlaying:false,isPaused:true,isBuffering:false,isStopped:true}
 
 };
 

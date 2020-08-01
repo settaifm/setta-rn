@@ -1,8 +1,12 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Dimensions} from 'react-native';
 import {Block, Button, Slider, theme} from 'galio-framework';
 import {appStyles as styles} from '../layout/constants/generic-styles'
+import {SET_VOLUME} from '../core/settings-store';
+import {throttle} from '../shared/services';
+import {setPlayerVolume} from '../player/play-services';
+
 
 
 const { width } = Dimensions.get('screen');
@@ -11,36 +15,30 @@ const { width } = Dimensions.get('screen');
 
 
 export function VolumeControl() {
-    const {isMuted,volume} = useSelector(state => state.player);
-    const {playbackInstance} = useSelector(state => state.settings);
+
+    const {volumeInSettings} = useSelector(state => state.settings);
     const dispatch = useDispatch();
+    const [volume, setVolume] = useState(volumeInSettings);
 
-
-    const onMutePressed = async () => {
-        await playbackInstance.setIsMutedAsync(!isMuted);
-    }
 
     const onVolumeSliderValueChange = async (value) => {
-        await playbackInstance.setVolumeAsync(value);
+
+        setVolume(value)
+        throttle(()=>{
+            setPlayerVolume(value);
+            dispatch({type:SET_VOLUME,payload:value})
+        },1000)
+
+
 
     }
 
 
-    const buttonIcon = isMuted?"volume-mute":"volume-up"
 
     return (<Block flex>
-        <Button
-            onPress={() => onMutePressed()}
-            round
-            onlyIcon
-            shadowless
-            icon={buttonIcon}
-            iconFamily="font-awesome"
-            iconColor={theme.COLORS.WHITE}
-            iconSize={theme.SIZES.BASE * 1.625}
-            color={theme.COLORS.TWITTER}
-            style={[styles.social, styles.shadow]}
-        /><Slider style={styles.volumeSlider} value={1} onValueChange={(evt) => onVolumeSliderValueChange(evt)}/></Block>)
+
+
+     </Block>)
 
 
 }

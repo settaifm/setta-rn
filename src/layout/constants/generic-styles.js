@@ -33,10 +33,16 @@ export const appStyles = StyleSheet.create({
         width: width *0.8
 
     },
+    width: theme.SIZES.BASE * 3.5,
+    height: theme.SIZES.BASE * 3.5,
+    borderRadius: theme.SIZES.BASE * 1.75,
+    backgroundColor:"blue",
     alignrightpos: {
 
-
-        paddingEnd: 20
+        paddingEnd: 20,
+        marginTop:20,
+        marginEnd:20,
+        paddingStart: 20
     },
     shadow: {
         shadowColor: 'black',
@@ -94,10 +100,10 @@ export const appStyles = StyleSheet.create({
         height: theme.SIZES.BASE * 2,
     },
     social: {
-        width: theme.SIZES.BASE * 5.5,
-        height: theme.SIZES.BASE * 5.5,
+        width: theme.SIZES.BASE * 3.5,
+        height: theme.SIZES.BASE * 3.5,
         borderRadius: theme.SIZES.BASE * 1.75,
-
+        backgroundColor:"blue"
 
     },
     playbutton: {
@@ -110,8 +116,12 @@ export const appStyles = StyleSheet.create({
     deemwarlogo: {
         fontStyle: 'italic',
         fontSize:12
-    }, deemwarlogocontainer: {
+    },
+    deemwarlogocontainer: {
         paddingEnd:25
+    },
+    centerlogocontainer: {
+
     },
     smallLogo: {
         width: theme.SIZES.BASE * 10.5,

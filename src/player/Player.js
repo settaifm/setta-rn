@@ -3,129 +3,99 @@ import {Dimensions, StyleSheet, View} from 'react-native';
 
 import React, {Fragment, useEffect, useState} from 'react';
 
-import TrackPlayer, {STATE_PLAYING, STATE_READY, usePlaybackState} from 'react-native-track-player';
+import {STATE_BUFFERING, STATE_PAUSED, STATE_PLAYING, STATE_STOPPED} from 'react-native-track-player';
 import {Block, Text} from 'galio-framework';
 import {materialTheme} from '../layout/constants';
-import {PlayControl} from '../components/PlayControl';
+import {PlayControl} from './PlayControl';
 import {Deemwar} from '../components/Deemwar';
 
 
-import {initPlayer} from './play-services';
-import {SET_PLAY_STATE} from "./player-store";
+import {addPlayBackErrorListener, addPlayBackStateListener, initPlayer} from './play-services';
+import {SET_PLAY_ERROR, SET_PLAY_STATE} from './player-store';
+import {SET_NOT_PLAYING, SET_PLAYING} from '../core/settings-store';
 
-const { height, width } = Dimensions.get('screen');
+const {height, width} = Dimensions.get('screen');
 
-const FM_URL ="http://stream.zeno.fm/b0qy1rp884zuv";
+const FM_URL = 'http://stream.zeno.fm/b0qy1rp884zuv';
 
 export function Player() {
 
     const {error} = useSelector(state => state.player);
-    const [playerState, setState] = useState(null)
-    const [loaded, setLoaded] = useState(false)
+    const [playerState, setState] = useState(null);
+    const [loaded, setLoaded] = useState(false);
     const {url} = useSelector(state => state.settings);
 
 
     const dispatch = useDispatch();
 
-    async function setup() {
-        await TrackPlayer.setupPlayer({});
-        await TrackPlayer.updateOptions({
-            stopWithApp: true,
-            capabilities: [
-                TrackPlayer.CAPABILITY_PLAY,
-                TrackPlayer.CAPABILITY_PAUSE,
-                TrackPlayer.CAPABILITY_STOP
-            ],
-            compactCapabilities: [
-                TrackPlayer.CAPABILITY_PLAY,
-                TrackPlayer.CAPABILITY_PAUSE
-            ]
-        });
-    }
 
     useEffect(() => {
 
 
-
-        if(null == url)
+        if (null == url) {
             return;
-
-
-
-        async function loadSound() {
-            await setup();
-            //await setPlayInSpeaker(true)
-            await initPlayer(dispatch,url)
-
-
-            TrackPlayer.addEventListener('playback-state', (evt) => {
-
-                if(evt['state']===STATE_READY || evt['state']===STATE_PLAYING){
-                    setLoaded(true)
-                }
-
-                dispatch({type:SET_PLAY_STATE,payload:evt['state']})
-            });
-
-            TrackPlayer.addEventListener('playback-error', (evt) => {
-                console.log("playback error",evt)
-                dispatch({type:SET_PLAY_ERROR,evt})
-            });
-
-
-
-           // const isPlaying = playerState === STATE_PLAYING;
-
-
         }
 
-        loadSound()
+
+        function setPlayState(state) {
+
+            const playStatuses = [STATE_PLAYING, STATE_PAUSED, STATE_STOPPED, STATE_BUFFERING];
+            if (playStatuses.includes(state)) {
+                dispatch({type: SET_PLAY_STATE, payload: state});
+            }
+            const settingStatus = [STATE_PLAYING, STATE_PAUSED, STATE_STOPPED,STATE_BUFFERING];
+            if (settingStatus.includes(state)) {
+
+             //   console.log("Going to update setting",state)
+
+                if (state == STATE_PLAYING || state == STATE_BUFFERING) {
+                    dispatch({type: SET_PLAYING});
+                } else {
+                    dispatch({type: SET_NOT_PLAYING});
+                }
+            }
+        }
+
+        async function initialize() {
+            await initPlayer(url);
+            setLoaded(true);
+            dispatch({type: SET_PLAYING});
+
+            addPlayBackStateListener((evt) => {
+                setPlayState(evt['state']);
+            });
+            addPlayBackErrorListener((evt) => {
+                console.log('playback error', evt);
+                dispatch({type: SET_PLAY_ERROR, evt});
+            });
+        }
+
+
+        initialize();
 
 
     }, [url]);
 
 
+    let component = <Fragment></Fragment>;
 
-    let component =<Fragment></Fragment>
-
-    if(loaded)
-        component =<PlayControl/>;
-
-
-
-    return (<><View style={{
-                            flex: 1,
-                            flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                        }}>
-                            <Block row top middle>
-                                <Text color="white" size={60}>Settai FM</Text>
-
-                                <Block top style={styles.pro}>
-                                    <Text size={16} color="white">24 hours</Text>
-                                </Block>
-                            </Block>
-                            <Deemwar/>
-                        </View>
+    if (loaded) {
+        component = <PlayControl/>;
+    }
 
 
-
-
-                <Block row style={styles.bottomContainer} >
-                    {component}
-                </Block></>);
-
-
+    return (<>
+        <Block row style={styles.bottomContainer}>
+            {component}
+        </Block></>);
 
 
 }
-
 
 
 function AudioRate() {
 
 }
-
 
 
 function ProgressBar() {
@@ -139,14 +109,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         marginLeft: 12,
         borderRadius: 2,
-        height: 22
+        height: 22,
+    },
+    trademark: {
+        backgroundColor: materialTheme.COLORS.LABEL,
+        borderRadius: 2
     },
     bottomContainer: {
 
 
         marginLeft: 12,
         marginRight: 12,
-        marginBottom:12
+        marginBottom: 12
 
 
     }

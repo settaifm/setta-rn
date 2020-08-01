@@ -1,12 +1,15 @@
 import {useSelector} from 'react-redux';
 import React from 'react';
 import {Dimensions, ImageBackground, Platform, StatusBar, StyleSheet, View} from 'react-native';
-import {SocialMedia} from '../components/SocialMedia';
-import {PlayControl} from '../components/PlayControl';
-import {Block, Button, theme} from 'galio-framework';
+import {TopBar} from '../components/TopBar';
+import {PlayControl} from '../player/PlayControl';
+import {Block, Button, Text, theme} from 'galio-framework';
 import {HeaderHeight} from './constants/utils';
 import {materialTheme} from './constants';
 import {Player} from '../player/Player';
+import {ErrorProgressBar, PlayProgressBar} from '../components/PlayProgressBar';
+import {Deemwar} from '../components/Deemwar';
+import {MiddleBar} from '../components/MiddleBar';
 
 const { height, width } = Dimensions.get('screen');
 export function ReloadComponent() {
@@ -43,11 +46,9 @@ export function Container() {
         <StatusBar barStyle="light-content" />
         <ImageBackground source={require('../../assets/galaxy.png')} style={styles.image}>
             <View style={{  flex: 1,flexDirection: 'column',justifyContent: 'space-between',}}>
-
-
-                    <SocialMedia/>
+                    <TopBar/>
+                    <MiddleBar/>
                     <Player/>
-
             </View>
         </ImageBackground>
     </View>
