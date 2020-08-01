@@ -7,45 +7,13 @@ import {
     STATE_READY,
     STATE_STOPPED,
 } from 'react-native-track-player';
+import {STATE_ERROR} from './play-services';
 
 
 
 export const SET_PLAY_STATE = "player/setstate";
 export const SET_PLAY_ERROR = "player/seterror";
-/*
 
-export type AVPlaybackStatus =
-  | {
-      isLoaded: false;
-      androidImplementation?: string;
-      error?: string; // populated exactly once when an error forces the object to unload
-    }
-  | {
-      isLoaded: true;
-      androidImplementation?: string;
-
-      uri: string;
-
-      progressUpdateIntervalMillis: number;
-      durationMillis?: number;
-      positionMillis: number;
-      playableDurationMillis?: number;
-      seekMillisToleranceBefore?: number;
-      seekMillisToleranceAfter?: number;
-
-      shouldPlay: boolean;
-      isPlaying: boolean;
-      isBuffering: boolean;
-
-      rate: number;
-      shouldCorrectPitch: boolean;
-      volume: number;
-      isMuted: boolean;
-      isLooping: boolean;
-
-      didJustFinish: boolean; // true exactly once when the track plays to finish
-    };
- */
 
 
 const initialState = {
@@ -58,6 +26,7 @@ const initialState = {
     isReady: false,
 
 
+
 };
 
 
@@ -66,10 +35,12 @@ const initialState = {
 const setState =(state,action)=>{
 
 
+
    const isPlaying = (action.payload===STATE_PLAYING)
    const isPaused = (action.payload===STATE_PAUSED)
    const isStopped = (action.payload===STATE_STOPPED)
     const isBuffering = (action.payload===STATE_BUFFERING)
+
 
     return { ...state,playerState:action.payload,isPlaying,isPaused,isBuffering,isStopped}
 

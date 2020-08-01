@@ -33,12 +33,12 @@ export const appStyles = StyleSheet.create({
         width: width *0.8
 
     },
-    width: theme.SIZES.BASE * 3.5,
-    height: theme.SIZES.BASE * 3.5,
-    borderRadius: theme.SIZES.BASE * 1.75,
-    backgroundColor:"blue",
     alignrightpos: {
 
+        width: theme.SIZES.BASE * 3.5,
+        height: theme.SIZES.BASE * 3.5,
+        borderRadius: theme.SIZES.BASE * 1.75,
+        backgroundColor:"blue",
         paddingEnd: 20,
         marginTop:20,
         marginEnd:20,
@@ -121,6 +121,33 @@ export const appStyles = StyleSheet.create({
         paddingEnd:25
     },
     centerlogocontainer: {
+
+        fontFamily:"Dosis-Bold",
+        fontSize:48
+    },
+    modal:{
+
+    },
+    volslider:{
+        color: "white"
+
+    },
+    text:{
+
+        color: "white"
+    },
+    trademark: {
+
+        backgroundColor: materialTheme.COLORS.LABEL,
+        borderRadius: 2,
+        paddingStart: 5,
+        paddingEnd:5,
+        marginStart:12
+
+    },
+    trademarkText: {
+        fontFamily:"Dosis-Light",
+        fontSize:12
 
     },
     smallLogo: {

@@ -6,9 +6,17 @@ import {Block, Button, theme} from 'galio-framework';
 import {appStyles as styles} from '../layout/constants/generic-styles';
 
 
-import {TOGGLE_AUDIO_OUTPUT} from '../core/settings-store';
-import TrackPlayer from 'react-native-track-player';
-import {pauseFm, playFm} from './play-services';
+import {SET_NOT_PLAYING, SET_PLAYING, SHOW_PLAYER_SETTINGS, TOGGLE_AUDIO_OUTPUT} from './settings-store';
+import TrackPlayer, {
+    PITCH_ALGORITHM_MUSIC,
+    STATE_BUFFERING,
+    STATE_PAUSED,
+    STATE_PLAYING,
+    STATE_STOPPED,
+} from 'react-native-track-player';
+import {addPlayBackErrorListener, addPlayBackStateListener, initPlayer, pauseFm, playFm} from './play-services';
+import {SET_PLAY_ERROR, SET_PLAY_STATE} from './player-store';
+import {debounce, throttle} from '../shared/services';
 
 const { height, width } = Dimensions.get('screen');
 export  function PlayControl() {
@@ -20,16 +28,30 @@ export  function PlayControl() {
     const [inProgress, setInProgress] = useState(false);
 
 
+    useEffect(() => {
+
+
+            if(playing != isPlaying)
+                setPlaying(isPlaying)
+
+    }, [isPlaying]);
 
 
 
     const onTogglePlayPressed = async () => {
+        //
+        //
 
 
         if(inProgress)
             return
-        setInProgress(true);
-        setPlaying(!isPlaying);
+         setInProgress(true);
+
+
+
+        setPlaying(!playing);
+
+
 
 
         if (isPlaying) {
@@ -39,27 +61,23 @@ export  function PlayControl() {
         }
 
 
-        await setInProgress(false);
+        setInProgress(false);
+
 
     }
 
 
 
+   const onSettingsPressed = async () => {
 
 
-   const onTogglePitchPressed = async () => {
-
-        const modifiedStateToPlayInSpeaker = !output_speaker;
-
-        //await setPlayInSpeaker(modifiedStateToPlayInSpeaker)
-
-        //dispatch({type:TOGGLE_AUDIO_OUTPUT})
+        dispatch({type:SHOW_PLAYER_SETTINGS})
 
     }
 
     const dispatch = useDispatch();
     const playPauseIcon =playing?"pause":"play"
-    const speakerIcon =output_speaker?"phone-bluetooth-speaker":"speaker"
+   // const speakerIcon =output_speaker?"phone-bluetooth-speaker":"speaker"
 
     let playPauseButton =    <Button
         round
@@ -93,12 +111,12 @@ export  function PlayControl() {
                             round
                             onlyIcon
                             shadowless
-                            icon={speakerIcon}
-                            iconFamily="MaterialIcons"
+                            icon="cog"
+                            iconFamily="font-awesome"
                             iconColor={theme.COLORS.WHITE}
                             iconSize={theme.SIZES.BASE * 4.625}
                             color={theme.COLORS.BLACK}
-                            onPress={() => onTogglePitchPressed()}
+                            onPress={() => onSettingsPressed()}
                             style={[styles.playbutton, styles.shadow]}
                         />
                     </Block>

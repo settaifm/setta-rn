@@ -10,6 +10,7 @@ import {Player} from '../player/Player';
 import {ErrorProgressBar, PlayProgressBar} from '../components/PlayProgressBar';
 import {Deemwar} from '../components/Deemwar';
 import {MiddleBar} from '../components/MiddleBar';
+import {Settings} from '../settings/Settings';
 
 const { height, width } = Dimensions.get('screen');
 export function ReloadComponent() {
@@ -46,7 +47,8 @@ export function Container() {
         <StatusBar barStyle="light-content" />
         <ImageBackground source={require('../../assets/galaxy.png')} style={styles.image}>
             <View style={{  flex: 1,flexDirection: 'column',justifyContent: 'space-between',}}>
-                    <TopBar/>
+                <Settings></Settings>
+                <TopBar/>
                     <MiddleBar/>
                     <Player/>
             </View>

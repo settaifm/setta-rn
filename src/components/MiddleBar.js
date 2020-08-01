@@ -12,7 +12,6 @@ const { width } = Dimensions.get('screen');
 
 export function MiddleBar() {
 
-    console.log("middle")
     return (<View style={{
             flex: 1,
             flexDirection: 'column',
@@ -26,7 +25,7 @@ export function MiddleBar() {
                 <Text color="white" style={styles.centerlogocontainer} size={60}>Settai FM</Text>
 
                 <Block top style={styles.trademark}>
-                    <Text size={16} color="white">24 hours</Text>
+                    <Text size={16} color="white" style={styles.trademarkText}>24 hours</Text>
                 </Block>
             </Block>
             <Deemwar/>

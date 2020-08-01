@@ -1,18 +1,17 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
 import React, {Fragment, useEffect, useState} from 'react';
 
-import {STATE_BUFFERING, STATE_PAUSED, STATE_PLAYING, STATE_STOPPED} from 'react-native-track-player';
-import {Block, Text} from 'galio-framework';
+import {STATE_BUFFERING, STATE_PLAYING, STATE_STOPPED} from 'react-native-track-player';
+import {Block} from 'galio-framework';
 import {materialTheme} from '../layout/constants';
 import {PlayControl} from './PlayControl';
-import {Deemwar} from '../components/Deemwar';
 
 
-import {addPlayBackErrorListener, addPlayBackStateListener, initPlayer} from './play-services';
+import {addErrorListener, addPlayBackStateListener, initPlayer} from './play-services';
 import {SET_PLAY_ERROR, SET_PLAY_STATE} from './player-store';
-import {SET_NOT_PLAYING, SET_PLAYING} from '../core/settings-store';
+import {SET_NOT_PLAYING, SET_PLAYING, SET_STOPPED} from './settings-store';
 
 const {height, width} = Dimensions.get('screen');
 
@@ -23,7 +22,7 @@ export function Player() {
     const {error} = useSelector(state => state.player);
     const [playerState, setState] = useState(null);
     const [loaded, setLoaded] = useState(false);
-    const {url} = useSelector(state => state.settings);
+    const {url,isStopped} = useSelector(state => state.settings);
 
 
     const dispatch = useDispatch();
@@ -32,6 +31,8 @@ export function Player() {
     useEffect(() => {
 
 
+        let listeners=null;
+
         if (null == url) {
             return;
         }
@@ -39,40 +40,59 @@ export function Player() {
 
         function setPlayState(state) {
 
-            const playStatuses = [STATE_PLAYING, STATE_PAUSED, STATE_STOPPED, STATE_BUFFERING];
-            if (playStatuses.includes(state)) {
-                dispatch({type: SET_PLAY_STATE, payload: state});
-            }
-            const settingStatus = [STATE_PLAYING, STATE_PAUSED, STATE_STOPPED,STATE_BUFFERING];
-            if (settingStatus.includes(state)) {
+            console.log(state)
 
-             //   console.log("Going to update setting",state)
+           dispatch({type: SET_PLAY_STATE,"payload":state});
+
 
                 if (state == STATE_PLAYING || state == STATE_BUFFERING) {
                     dispatch({type: SET_PLAYING});
                 } else {
                     dispatch({type: SET_NOT_PLAYING});
+                    if (state == STATE_STOPPED){
+                        dispatch({type: SET_STOPPED});
+                    }
                 }
-            }
+
         }
 
         async function initialize() {
+
             await initPlayer(url);
             setLoaded(true);
             dispatch({type: SET_PLAYING});
 
-            addPlayBackStateListener((evt) => {
+            listeners = addPlayBackStateListener((evt) => {
+
                 setPlayState(evt['state']);
             });
-            addPlayBackErrorListener((evt) => {
-                console.log('playback error', evt);
-                dispatch({type: SET_PLAY_ERROR, evt});
+
+            const errorListener = addErrorListener((evt) => {
+
+                dispatch({type: SET_PLAY_ERROR,payload:evt});
             });
+
+
+            listeners.push(errorListener)
+
         }
 
 
         initialize();
 
+        return () => {
+            if(listeners){
+
+                listeners.forEach(listener=>{
+                    listener.remove()
+                })
+
+
+            }
+
+
+
+        }
 
     }, [url]);
 
@@ -93,14 +113,6 @@ export function Player() {
 }
 
 
-function AudioRate() {
-
-}
-
-
-function ProgressBar() {
-
-}
 
 const styles = StyleSheet.create({
 
@@ -111,10 +123,7 @@ const styles = StyleSheet.create({
         borderRadius: 2,
         height: 22,
     },
-    trademark: {
-        backgroundColor: materialTheme.COLORS.LABEL,
-        borderRadius: 2
-    },
+
     bottomContainer: {
 
 

@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Dimensions} from 'react-native';
 import {Block, Button, Slider, theme} from 'galio-framework';
 import {appStyles as styles} from '../layout/constants/generic-styles'
-import {SET_VOLUME} from '../core/settings-store';
+import {SET_VOLUME} from '../player/settings-store';
 import {throttle} from '../shared/services';
 import {setPlayerVolume} from '../player/play-services';
 
@@ -24,10 +24,10 @@ export function VolumeControl() {
     const onVolumeSliderValueChange = async (value) => {
 
         setVolume(value)
-        throttle(()=>{
+
             setPlayerVolume(value);
             dispatch({type:SET_VOLUME,payload:value})
-        },1000)
+
 
 
 
