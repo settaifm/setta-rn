@@ -238,7 +238,7 @@ PODS:
   - React-jsinspector (0.63.2)
   - react-native-safe-area-context (3.0.7):
     - React
-  - react-native-slider (3.0.0):
+  - react-native-slider (3.0.3):
     - React
   - react-native-track-player (1.2.3):
     - React
@@ -476,7 +476,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-safe-area-context: ef6f16c66b0797ecae1bf86c103dfb3dc16fc33d
-  react-native-slider: 12bd76d3d568c9c5500825db54123d44b48e4ad4
+  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-track-player: 28b96dd6404dea3eee80e67b74507679235a8dfb
   React-RCTActionSheet: 910163b6b09685a35c4ebbc52b66d1bfbbe39fc5
   React-RCTAnimation: 9a883bbe1e9d2e158d4fb53765ed64c8dc2200c6
@@ -494,6 +494,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e8ce9b610c41cad510cdcd0592a8fe3c741f9e56
+PODFILE CHECKSUM: d38056121315f21be50a02f3096a377685ccf6e7
 
 COCOAPODS: 1.9.3

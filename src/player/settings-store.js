@@ -13,7 +13,7 @@ export const SHOW_PLAYER_SETTINGS = "settings/showOptions";
 export const HIDE_PLAYER_SETTINGS = "settings/hideOptions";
 
 
-const FM_URL ="http://stream.zeno.fm/b0qy1rp884zuv";
+const FM_URL ="https://stream.zeno.fm/b0qy1rp884zuv";
 
 export const Pitches=[]
 const initialState = {

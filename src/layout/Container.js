@@ -1,10 +1,10 @@
 import {useSelector} from 'react-redux';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Dimensions, ImageBackground, Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {TopBar} from '../components/TopBar';
 import {PlayControl} from '../player/PlayControl';
 import {Block, Button, Text, theme} from 'galio-framework';
-import {HeaderHeight} from './constants/utils';
+import {HeaderHeight, StatusHeight} from './constants/utils';
 import {materialTheme} from './constants';
 import {Player} from '../player/Player';
 import {ErrorProgressBar, PlayProgressBar} from '../components/PlayProgressBar';
@@ -41,10 +41,12 @@ export function Container() {
       let  component =<Player/>;
 
 
-
+      let navBar =   <StatusBar barStyle="light-content" style={styles.navbar} />
+      if(Platform.OS === 'ios' )
+          navBar=<Fragment></Fragment>
 
     return <View style={styles.viewcontainer}>
-        <StatusBar barStyle="light-content" />
+        {navBar}
         <ImageBackground source={require('../../assets/galaxy.png')} style={styles.image}>
             <View style={{  flex: 1,flexDirection: 'column',justifyContent: 'space-between',}}>
                 <Settings></Settings>
@@ -69,7 +71,12 @@ const styles = StyleSheet.create({
     },
     viewcontainer: {
         flex: 1,
-        flexDirection: "column"
+        flexDirection: "column",
+        marginTop: Platform.OS === 'ios' ?  HeaderHeight:0,
+
+    },
+    navbar: {
+
     },
     image: {
         flex: 1,

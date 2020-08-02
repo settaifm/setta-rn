@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {Dimensions, Image, Linking} from 'react-native';
+import {Dimensions, Image, Linking, Platform} from 'react-native';
 
 import React, {useState, useEffect, Fragment} from 'react';
 import {Block, Button, theme} from 'galio-framework';
@@ -68,6 +68,8 @@ export  function PlayControl() {
 
 
 
+    const buttonSize = Platform.OS === 'ios' ?  3.625:4.625
+
    const onSettingsPressed = async () => {
 
 
@@ -86,15 +88,15 @@ export  function PlayControl() {
         icon={playPauseIcon}
         iconFamily="font-awesome"
         iconColor={theme.COLORS.WHITE}
-        iconSize={theme.SIZES.BASE * 4.625}
+        iconSize={theme.SIZES.BASE * buttonSize}
         color={theme.COLORS.BLACK}
         onPress={() => onTogglePlayPressed()}
-        style={[styles.playbutton, styles.shadow]}
+        style={[styles.playbutton]}
     />
     if(isBuffering)
         playPauseButton =<Fragment></Fragment>
 
-    return (<Block row center space="between">
+    return (<Block row center space="between" style={[styles.playcontrolcontainer]}>
                     <Block flex middle left>
                         {playPauseButton}
                     </Block>
@@ -114,10 +116,10 @@ export  function PlayControl() {
                             icon="cog"
                             iconFamily="font-awesome"
                             iconColor={theme.COLORS.WHITE}
-                            iconSize={theme.SIZES.BASE * 4.625}
+                            iconSize={theme.SIZES.BASE * buttonSize}
                             color={theme.COLORS.BLACK}
                             onPress={() => onSettingsPressed()}
-                            style={[styles.playbutton, styles.shadow]}
+                            style={[styles.playbutton]}
                         />
                     </Block>
                 </Block>

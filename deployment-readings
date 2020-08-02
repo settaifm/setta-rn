@@ -1,0 +1,28 @@
+
+
+info.plist
+
+    Add font names with extension
+
+
+Copy fonts directly
+
+
+if multiple fonts error
+        remove from pods
+
+the bootom top for ios is so full add padding for ios specific
+
+
+use react native rename to rename project , work only in mac
+
+
+Crash on Release
+     https://medium.com/@devesu/react-native-android-release-build-crash-on-device-14f2c9eacf18
+
+To watch logs
+
+    adb logcat >text.log
+
+
+Identify permissions in androidmanifest.xml for libraries and use it 

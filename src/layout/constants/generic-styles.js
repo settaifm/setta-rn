@@ -1,7 +1,8 @@
 import {materialTheme} from "./index";
 
-import {Dimensions ,StyleSheet} from "react-native";
+import {Dimensions, Platform, StyleSheet} from "react-native";
 import {  theme } from 'galio-framework';
+import {HeaderHeight} from "./utils";
 const { height, width } = Dimensions.get('screen');
 const thumbMeasure = (width - 48 - 32) / 3;
 
@@ -106,11 +107,21 @@ export const appStyles = StyleSheet.create({
         backgroundColor:"blue"
 
     },
+    playcontrolcontainer:{
+     flex:1,
+        paddingBottom:8,
+        marginBottom: Platform.OS === 'ios' ?  30:10
+    },
     playbutton: {
         width: theme.SIZES.BASE * 4.5,
         height: theme.SIZES.BASE * 3.5,
         borderRadius: theme.SIZES.BASE * 1.75,
         justifyContent: 'center',
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+        shadowOpacity: 0.2,
+        elevation: 2,
 
     },
     deemwarlogo: {

@@ -7,7 +7,7 @@ import {HIDE_PLAYER_SETTINGS, SET_VOLUME} from '../player/settings-store';
 import {setPlayerVolume} from '../player/play-services';
 import {throttle} from '../shared/services';
 import {appStyles as styles} from '../layout/constants/generic-styles';
-import {  TouchableOpacity } from "react-native";
+import {  TouchableOpacity,TouchableWithoutFeedback } from "react-native";
 export function Settings(){
 
     const {volume,showSettings} = useSelector(state => state.settings);
@@ -34,43 +34,45 @@ function onClose() {
 
     }
 
-    return     <Modal
-        animationType = {"fade"}
-        transparent = {true}
-        visible = {true}
-        onRequestClose = {() =>{ onClose() } }>
+    return <TouchableWithoutFeedback onPress={() => onClose()}>
+        <Modal
+            animationType = {"fade"}
+            transparent = {true}
+            visible = {true}
+            onRequestClose = {() =>{ onClose() } }>
+        <TouchableWithoutFeedback onPress={() => onClose()}>
 
 
-
-        <View style={{flex: 1, flexDirection: 'column', paddingStart:20 ,paddingEnd:20}} onPress = {() =>{ onClose() } }>
-            <View style={{ height: 50}} />
-            <View style={{ height: 50}} />
-
-
-            <View style={{ flex: 1, height: 50 , flexDirection: 'row'}} >
-                <Block flex >
-                    <Text style = {styles.text}>Volume</Text>
-                    <Slider
-                        maximumValue={100}
-                        minimumValue={0}
-                        value={volumeInput}
-                        onValueChange={(evt) => updateVolume(evt)}
-                        onSlidingcomplete={(evt) => updateVolume(evt)}
-                        style = {styles.volslider}
-                        step={1}
-                        thumbTintColor={"white"}
-                    />
-                </Block>
-
-
+            <View style={{flex: 1, flexDirection: 'column', paddingStart:20 ,paddingEnd:20}} onPress = {() =>{ onClose() } }>
                 <View style={{ height: 50}} />
                 <View style={{ height: 50}} />
+
+
+                <View style={{ flex: 1, height: 50 , flexDirection: 'row'}} >
+                    <Block flex >
+                        <Text style = {styles.text}>Volume</Text>
+                        <Slider
+                            maximumValue={100}
+                            minimumValue={0}
+                            value={volumeInput}
+                            onValueChange={(evt) => updateVolume(evt)}
+                            onSlidingcomplete={(evt) => updateVolume(evt)}
+                            style = {styles.volslider}
+                            step={1}
+                            thumbTintColor={"white"}
+                        />
+                    </Block>
+
+
+                    <View style={{ height: 50}} />
+                    <View style={{ height: 50}} />
+
+                </View>
+
 
             </View>
-
-
-        </View>
-
-    </Modal>
+    </TouchableWithoutFeedback>
+</Modal>
+</TouchableWithoutFeedback>;
 }
 

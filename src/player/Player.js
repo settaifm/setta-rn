@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 
 import React, {Fragment, useEffect, useState} from 'react';
 
@@ -12,10 +12,10 @@ import {PlayControl} from './PlayControl';
 import {addErrorListener, addPlayBackStateListener, initPlayer} from './play-services';
 import {SET_PLAY_ERROR, SET_PLAY_STATE} from './player-store';
 import {SET_NOT_PLAYING, SET_PLAYING, SET_STOPPED} from './settings-store';
+import {HeaderHeight} from "../layout/constants/utils";
 
 const {height, width} = Dimensions.get('screen');
 
-const FM_URL = 'http://stream.zeno.fm/b0qy1rp884zuv';
 
 export function Player() {
 
@@ -26,6 +26,7 @@ export function Player() {
 
 
     const dispatch = useDispatch();
+
 
 
     useEffect(() => {
@@ -69,7 +70,7 @@ export function Player() {
 
             const errorListener = addErrorListener((evt) => {
 
-                dispatch({type: SET_PLAY_ERROR,payload:evt});
+                dispatch({type: SET_PLAY_ERROR,payload:JSON.stringify(evt)});
             });
 
 
@@ -104,10 +105,9 @@ export function Player() {
     }
 
 
-    return (<>
-        <Block row style={styles.bottomContainer}>
+    return (<Block row style={styles.bottomContainer}>
             {component}
-        </Block></>);
+        </Block>);
 
 
 }
@@ -129,7 +129,6 @@ const styles = StyleSheet.create({
 
         marginLeft: 12,
         marginRight: 12,
-        marginBottom: 12
 
 
     }
