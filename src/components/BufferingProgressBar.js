@@ -11,7 +11,7 @@ const { height, width } = Dimensions.get('screen');
 
 
 
-export function PlayProgressBar() {
+export function BufferingProgressBar() {
 
     const {isBuffering} = useSelector(state => state.player);
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {Dimensions, View,Linking} from 'react-native';
 import {Button, Text, theme} from 'galio-framework';
 import {appStyles as styles} from '../layout/constants/generic-styles';
-import {ErrorProgressBar, PlayProgressBar} from './PlayProgressBar';
+import {ErrorProgressBar, BufferingProgressBar} from './BufferingProgressBar';
 
 
 
@@ -10,6 +10,7 @@ const { width } = Dimensions.get('screen');
 
 
 export function TopBar() {
+
 
 
     function onFacebookPagePressed() {
@@ -48,14 +49,10 @@ export function TopBar() {
                 />
             </View>
             <View style={{flex: 1, flexDirection: 'row'}}>
-               <PlayProgressBar/>
+               <BufferingProgressBar/>
                <ErrorProgressBar/>
             </View>
-
-
         </View>
-
-
         </View>
         )
 }

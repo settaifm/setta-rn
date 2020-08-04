@@ -7,7 +7,7 @@ import {Block, Button, Text, theme} from 'galio-framework';
 import {HeaderHeight, StatusHeight} from './constants/utils';
 import {materialTheme} from './constants';
 import {Player} from '../player/Player';
-import {ErrorProgressBar, PlayProgressBar} from '../components/PlayProgressBar';
+import {ErrorProgressBar, BufferingProgressBar} from '../components/BufferingProgressBar';
 import {Deemwar} from '../components/Deemwar';
 import {MiddleBar} from '../components/MiddleBar';
 import {Settings} from '../settings/Settings';
